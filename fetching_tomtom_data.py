@@ -10,12 +10,12 @@ import csv
 import os
 
 file_path = "/opt/airflow/dags/data/tomtom_data.csv"
-API_KEY = "2hwlZA6iPIKOZz6l53YeHmci6FeMFxqV"  # TomTom API Key
+API_KEY = "INSERT_API_KEY_HERE"  # TomTom API Key
 lat, lon = 51.5177, 0.1948  # Coordinates for London, Rainham
 
 def traffic_data_fetch(lat, lon, ti):
     '''
-    Fetch traffic data from TomTom API for given latitude and longitude.
+    Fetch traffic data from the TomTom API for the given latitude and longitude.
     '''
     url = f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key={API_KEY}&point={lat},{lon}"
     response = requests.get(url)
@@ -182,5 +182,6 @@ with DAG(
 
     # Task order:
     fetch_tomtom_data >> data_existence_check >> [row_append, initialise_csv] >> transform_data
+
 
     fetch_tomtom_data >> initialise_postgres >> row_append_postgres
